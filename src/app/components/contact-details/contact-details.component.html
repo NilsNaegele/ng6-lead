@@ -1,3 +1,22 @@
-<p>
-  contact-details works!
-</p>
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--4-col"></div>
+  <div *ngFor="let customer of customer" class="mdl-cell mdl-cell--4-col">
+    <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--12-col-desktop">
+      <img class="mdl-card__title mdl-card--expand mdl-color--teal-300" *ngIf="customer?.profilePicture === null" src="../../../assets/images/contact.jpg"
+        alt="Standard Profile Picture">
+      <img class="mdl-card__title mdl-card--expand mdl-color--teal-300" *ngIf="customer?.profilePicture !== null" class="card-img-top"
+        [src]="customer?.profilePicture" alt="Profile Picture">
+      <h2>{{ customer?.displayName }}</h2>
+      <div class="mdl-card__supporting-text mdl-color-text--grey-600">
+        <p class="card-text">Category: {{ customer?.contactType }}</p>
+        <p class="card-text" *ngIf="customer?.emails === null">Email: ...</p>
+        <p class="card-text" *ngIf="customer?.emails !== null">Email: {{ customer?.emails[0].email }}</p>
+        <p class="card-text" *ngIf="customer?.phoneNumbers === null">Phone: ...</p>
+        <p class="card-text" *ngIf="customer?.phoneNumbers !== null">Phone: {{ customer?.phoneNumbers[0]?.number }}</p>
+      </div>
+      <div class="mdl-card__actions mdl-card--border">
+        <a routerLink="/contacts" class="mdl-button mdl-js-button mdl-js-ripple-effect">Back</a>
+      </div>
+    </div>
+  </div>
+</div>

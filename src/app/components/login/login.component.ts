@@ -12,7 +12,6 @@ export class LoginComponent implements OnInit {
 
   email: string;
   password: string;
-  errorMessage: string;
 
   constructor(private authenticationService: AuthenticationService,
               private router: Router) { }
@@ -21,7 +20,6 @@ export class LoginComponent implements OnInit {
   login() {
     console.log(this.email);
     console.log(this.password);
-    this.errorMessage = '';
     if (this.email !== '' && this.password !== '') {
       this.authenticationService.attemptAuth('login', this.email, this.password).subscribe(
         (data) => {
@@ -32,8 +30,6 @@ export class LoginComponent implements OnInit {
         }
       );
     } else {
-      this.errorMessage = 'Invalid email and/or password.';
-      console.log(this.errorMessage);
       return;
     }
   }

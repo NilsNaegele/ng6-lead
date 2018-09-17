@@ -1,7 +1,8 @@
-  <header class="demo-drawer-header">
-    <img src="../assets/images/user.jpg" class="demo-avatar">
+  <header *ngIf="user$ | async as user" class="demo-drawer-header">
+    <img *ngIf="!userProfilePicture" src="../assets/images/user.jpg" class="demo-avatar">
+    <img *ngIf="userProfilePicture" src="{{ userProfilePicture}}" class="demo-avatar">
     <div class="demo-avatar-dropdown">
-      <span>hello@example.com</span>
+      <span>Welcome {{ user?.user?.firstName }}</span>
       <div class="mdl-layout-spacer"></div>
       <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
         <i class="material-icons" role="presentation">arrow_drop_down</i>
