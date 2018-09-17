@@ -1,33 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
+import { ContactService } from '../../services/contact.service';
+import { CategoryService } from '../../services/category.service';
 
 import { Observable } from 'rxjs';
-import { ContactService } from '../../services/contact.service';
-
+declare var window: any;
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, AfterViewInit {
   user$: Observable<any>;
   id: string;
-
   customers: any;
+  categories: any;
   userProfilePicture: string;
 
   constructor(private authenticationService: AuthenticationService,
-              private contactService: ContactService) {
+              private contactService: ContactService,
+              private categoryService: CategoryService) {
     this.authenticationService.isAuthenticated.subscribe(authState => {
       if (authState) {
-          this.user$ = this.authenticationService.currentUser;
-          this.user$.subscribe((user) => {
+        this.user$ = this.authenticationService.currentUser;
+        this.user$.subscribe((user) => {
+          if (user.user) {
             this.id = user.user.id;
-          });
+          }
+        });
       }
     });
-   }
+  }
+
+  select(category: string) {
+    console.log(category);
+    this.categoryService.publishCategory(category);
+  }
 
   ngOnInit() {
     this.contactService.fetchAllCustomers().subscribe((customers) => {
@@ -39,6 +48,11 @@ export class SidebarComponent implements OnInit {
         }
       });
     });
+    this.categories = this.categoryService.fetchAllCategories();
+  }
+
+  ngAfterViewInit() {
+    window.componentHandler.upgradeAllRegistered();
   }
 
 }
