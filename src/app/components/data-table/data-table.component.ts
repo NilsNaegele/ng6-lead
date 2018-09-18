@@ -20,19 +20,34 @@ export class DataTableComponent implements OnInit, AfterViewInit {
   customers: any[] = [];
   filteredCustomers: any[] = [];
   category: string;
+  resultsLength = 0;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private contactService: ContactService,
     private categoryService: CategoryService) {
-    // this.dataSource = new MatTableDataSource(this.filteredCustomers);
+    this.contactService.searchQuery$.subscribe(
+      query => {
+        if (query) {
+          this.filteredCustomers = (query) ?
+          this.filteredCustomers
+          .filter(c => c.displayName.toLowerCase().includes(query.toLowerCase()))
+          : this.customers;
+        } else {
+          this.filteredCustomers = this.customers;
+        }
+        this.resultsLength = this.filteredCustomers.length;
+        this.dataSource = new MatTableDataSource(this.filteredCustomers);
+      });
   }
 
   ngOnInit() {
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
     this.contactService.fetchAllCustomers().subscribe(customers => {
       this.filteredCustomers = this.customers = customers;
-
+      this.resultsLength = this.filteredCustomers.length;
       this.categoryService.categoryType$.subscribe(
         type => {
           if (type) {
@@ -45,10 +60,10 @@ export class DataTableComponent implements OnInit, AfterViewInit {
             this.filteredCustomers = (this.category) ?
             this.customers.filter(c => c.contactType === this.category) : this.customers;
           }
+          this.resultsLength = this.filteredCustomers.length;
+          this.dataSource = new MatTableDataSource(this.filteredCustomers);
         });
-        this.dataSource = new MatTableDataSource(this.filteredCustomers);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+          this.dataSource = new MatTableDataSource(this.filteredCustomers);
     });
   }
 

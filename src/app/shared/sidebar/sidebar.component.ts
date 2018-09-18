@@ -1,9 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 import { ContactService } from '../../services/contact.service';
 import { CategoryService } from '../../services/category.service';
 
 import { Observable } from 'rxjs';
+
 declare var window: any;
 
 @Component({
@@ -20,7 +22,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   constructor(private authenticationService: AuthenticationService,
               private contactService: ContactService,
-              private categoryService: CategoryService) {
+              private categoryService: CategoryService,
+              private router: Router) {
     this.authenticationService.isAuthenticated.subscribe(authState => {
       if (authState) {
         this.user$ = this.authenticationService.currentUser;

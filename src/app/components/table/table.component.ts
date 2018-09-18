@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+
 import { ContactService } from '../../services/contact.service';
+import { CategoryService } from '../../services/category.service';
 
 import { Subscription } from 'rxjs';
 
@@ -11,12 +13,13 @@ declare var window: any;
   styleUrls: ['./table.component.css']
 })
 export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
-  customers: { displayName: string }[];
+  customers: any[] = [];
   filteredCustomers: any[];
+  category: string;
 
   customerSubscription: Subscription;
 
-  constructor(private contactService: ContactService) {
+  constructor(private contactService: ContactService, private categoryService: CategoryService) {
     this.contactService.searchQuery$.subscribe(
       query => {
         if (query) {
@@ -32,7 +35,22 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.customerSubscription = this.contactService.fetchAllCustomers()
-    .subscribe(customers => this.filteredCustomers = this.customers = customers);
+    .subscribe(customers =>  {
+      this.filteredCustomers = this.customers = customers;
+      this.categoryService.categoryType$.subscribe(
+        type => {
+          if (type) {
+            this.category = type;
+            console.log(this.category);
+          }
+          if (this.category === 'ALL') {
+            this.filteredCustomers = customers;
+          } else {
+            this.filteredCustomers = (this.category) ?
+            this.customers.filter(c => c.contactType === this.category) : this.customers;
+          }
+        });
+    });
   }
 
   ngAfterViewInit() {
