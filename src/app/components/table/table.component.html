@@ -1,0 +1,29 @@
+<div class="mdl-grid">
+  <div class="mdl-cell mdl-cell--2-col"></div>
+  <div class="mdl-cell mdl-cell--10-col">
+    <table class="mdl-data-table mdl-js-data-table mdl-data-table mdl-shadow--2dp">
+      <thead>
+        <tr>
+          <th class="mdl-data-table__cell--non-numeric">Name</th>
+          <th>Email</th>
+          <th>Website</th>
+          <th>Phone Number</th>
+          <th>Last Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of filteredCustomers">
+          <td *ngIf="customer.contactType === 'COMPANY'; else company" class="mdl-data-table__cell--non-numeric">{{ customer?.companyName }}</td>
+          <td #company *ngIf="customer.contactType === 'PERSON'" class="mdl-data-table__cell--non-numeric">{{ customer?.firstName + ' ' + customer?.lastName }}</td>
+          <td *ngIf="customer?.emails === null"></td>
+          <td *ngIf="customer?.emails !== null">{{ customer?.emails[0]?.email }}</td>
+          <td *ngIf="customer?.websites === null"></td>
+          <td *ngIf="customer?.websites !== null">{{ customer?.websites[0]?.url }}</td>
+          <td *ngIf="customer?.phoneNumbers === null"></td>
+          <td *ngIf="customer?.phoneNumbers !== null">{{ customer?.phoneNumbers[0]?.number }}</td>
+          <td>{{ customer?.updated | date:'medium' }}</td>
+        </tr>
+        <tr>
+      </tbody>
+    </table>
+  </div>

@@ -11,14 +11,13 @@
       <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
         <li *ngFor="let cat of categories" (click)="select(cat.key)"
              class="mdl-menu__item">{{ cat.value }}</li>
-        <!-- <li class="mdl-menu__item">People</li>
-        <li class="mdl-menu__item">Visitors</li> -->
         <li class="mdl-menu__item"><i class="material-icons">add</i>Change accounts...</li>
       </ul>
     </div>
   </header>
   <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
-    <a class="mdl-navigation__link" routerLink="/contacts"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>contacts</a>    
+    <a class="mdl-navigation__link" routerLink="/contacts"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>contacts</a>
+    <a class="mdl-navigation__link" routerLink="/table-view"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">table_chart</i>table-view</a>   
     <a class="mdl-navigation__link" routerLink="/demo"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">flag</i>demo</a>
     <div class="mdl-layout-spacer"></div>
     <a class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
