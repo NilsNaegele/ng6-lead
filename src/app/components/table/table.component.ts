@@ -17,11 +17,22 @@ export class TableComponent implements OnInit, OnDestroy, AfterViewInit {
   customerSubscription: Subscription;
 
   constructor(private contactService: ContactService) {
-    this.customerSubscription = this.contactService.fetchAllCustomers()
-    .subscribe(customers => this.filteredCustomers = this.customers = customers);
+    this.contactService.searchQuery$.subscribe(
+      query => {
+        if (query) {
+          this.filteredCustomers = (query) ?
+          this.filteredCustomers
+          .filter(c => c.displayName.toLowerCase().includes(query.toLowerCase()))
+          : this.customers;
+        } else {
+          this.filteredCustomers = this.customers;
+        }
+      });
   }
 
   ngOnInit() {
+    this.customerSubscription = this.contactService.fetchAllCustomers()
+    .subscribe(customers => this.filteredCustomers = this.customers = customers);
   }
 
   ngAfterViewInit() {
