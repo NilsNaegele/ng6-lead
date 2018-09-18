@@ -17,6 +17,17 @@ export class ContactsComponent implements OnInit {
   constructor(private contactService: ContactService,
     private categoryService: CategoryService,
     private route: Router) {
+      this.contactService.searchQuery$.subscribe(
+        query => {
+          if (query) {
+            this.filteredCustomers = (query) ?
+            this.filteredCustomers
+            .filter(c => c.displayName.toLowerCase().includes(query.toLowerCase()))
+            : this.customers;
+          } else {
+            this.filteredCustomers = this.customers;
+          }
+        });
   }
 
   ngOnInit() {

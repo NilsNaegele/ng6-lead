@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { ApiService } from './api.service';
 
@@ -9,6 +9,17 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ContactService {
+
+
+  // observable string source
+  private searchQuery = new Subject<string>();
+  // observable string streams
+  searchQuery$ = this.searchQuery.asObservable();
+
+  // service message commands
+  publishSearch(query: string) {
+    this.searchQuery.next(query);
+  }
 
   constructor(private apiService: ApiService) { }
 

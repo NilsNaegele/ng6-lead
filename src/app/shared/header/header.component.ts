@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { ContactService } from '../../services/contact.service';
 declare var window: any;
 
 @Component({
@@ -8,7 +9,12 @@ declare var window: any;
 })
 export class HeaderComponent implements OnInit, AfterViewInit {
 
-  constructor() { }
+  constructor(private contactService: ContactService) { }
+
+  filter(query: string) {
+    console.log(query);
+    this.contactService.publishSearch(query);
+  }
 
   ngOnInit() {
   }
